@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USCIS - Verifique el Estatus de su Caso</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Roboto', 'Arial', sans-serif;
+            background-color: #f1f1f1;
+            color: #212121;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 10px 0;
+        }
+        .header-content, .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-content img {
+            max-width: 200px;
+            height: auto;
+        }
+        .nav-topics {
+            background-color: #ffffff;
+            padding: 10px 0;
+        }
+        .nav-topics ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .nav-topics ul li a {
+            color: rgb(6, 3, 177);
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        .main-content {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            border: 1px solid #d3d3d3;
+        }
+        .status-check-section {
+            border: 2px solid #d3d3d3;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #000000;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+        }
+        input[type="text"]#receiptNumber {
+            width: 20%;
+        }
+        input[type="text"]#captcha {
+            width: 10%;
+            margin-top: 10px;
+        }
+        .captcha {
+            background-color: #ffffff;
+            border: 1px solid #ffffff;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        #captchaImage {
+            max-width: 100px;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background-color: #cccccc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: not-allowed;
+            margin-top: 10px;
+        }
+        .btn.active {
+            background-color: #205493;
+            cursor: pointer;
+        }
+        .links {
+            margin-top: 20px;
+        }
+        .links a {
+            color: #205493;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .notification {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+        }
+        .notification a {
+            color: #205493;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .separator {
+            border-top: 2px solid #333;
+            margin: 20px 0;
+        }
+        .resources {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .resource {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            flex: 1 1 calc(50% - 20px);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .resource h3 {
+            margin-top: 0;
+        }
+        .bottom-nav {
+            background-color: #ffffff;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        .bottom-nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .bottom-nav ul li a {
+            color: #000000;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        
+        .footer-section-2 {
+            background-color: #d3d3d3;
+            height: 150px;
+            width: 100%;
+        }
+        .footer-section-3 {
+            background-color: #205493;
+            height: 350px;
+            width: 100%;
+        }
+        #statusMessage {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <img src="/images/USCIS_logo_English.png" alt="USCIS Logo">
+            <div>
+                <p style="margin: 0;">USFlag</p>
+                <p style="margin: 0;">Un sitio oficial del Gobierno de Estados Unidos</p>
+                <p style="margin: 0;"><a href="#" style="color: rgb(6, 3, 177); text-decoration: underline;">Así es como usted puede verificarlo</a></p>
+                <p style="margin: 0;">English</p>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="nav-topics">
+        <ul>
+            <li><a href="#">Temas</a></li>
+            <li><a href="#">Formularios</a></li>
+            <li><a href="#">Noticias</a></li>
+            <li><a href="#">Ciudadanía</a></li>
+            <li><a href="#">Residencia Permanente</a></li>
+            <li><a href="#">Leyes</a></li>
+            <li><a href="#">Herramientas</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1>El Estatus de Caso en Línea</h1>
+        
+        <div class="status-check-section">
+            <h2>Verifique el Estatus de su Caso</h2>
+            <p>Utilice esta herramienta para administrar todas sus solicitudes y peticiones.</p>
+            <p><em>El número de recibo es un identificador único de 13 caracteres que se compone de tres letras y 10 números. Omita los guiones ("-") al ingresar un número de recibo. Sin embargo, puede incluir todos los demás caracteres, incluidos los asteriscos ("*"), si aparecen en su notificación como parte del número de recibo. <strong>Cuando se ingresa un número de recibo y cualquier valor en el campo de captcha, el botón "Verifique Estatus" se habilitará y podrá verificar el estatus.</strong></em></p>
+            
+            <form id="statusForm">
+                <div class="form-group">
+                    <label for="receiptNumber">Ingrese el Número de Su Recibo</label>
+                    <input type="text" id="receiptNumber" name="receiptNumber" placeholder="WAC1234567890" required>
+                </div>
+                <div class="captcha">
+                    <p>Entre en el encasillado siguiente las letras provistas a continuación. No importa si escribe en mayúsculas o minúsculas. ¿No puede leer estas letras? Haga "click" en el botón para "Actualizar la Imagen" con diferentes letras o use el botón de "Audio".</p>
+                    <img src="images/m7kmJ.png" alt="Captcha" id="captchaImage">
+                    <input type="text" id="captcha" name="captcha" required>
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn" disabled>Verifique Estatus</button>
+            </form>
+
+            <div id="statusMessage"></div>
+
+            <div class="links">
+                <a href="#">¿Tiene una cuenta? Acceso</a>
+                <a href="#">¿Crea una cuenta? Inscribirse</a>
+            </div>
+        </div>
+
+        <button type="button" class="btn">Audio</button>
+        <button type="button" class="btn">Actualizar la Imagen</button>
+
+        <div class="notification">
+            <a href="#">NOTIFICACIÓN DE PRIVACIDAD DE DHS</a>
+            <a href="#">LEYES DE REDUCCIÓN DE PAPELEO</a>
+        </div>
+
+        <div class="separator"></div>
+        <h2>HERRAMIENTAS RELACIONADAS</h2>
+        <div class="resources">
+            <div class="resource">
+                <h3>Cambio de Dirección</h3>
+                <p>Le recomendamos que actualice su dirección con USCIS para asegurarse que recibe toda la correspondencia y beneficios de parte de nuestra de manera oportuna y evitar posibles retrasos o denegaciones relacionadas con su caso.</p>
+                <a href="#" class="btn">Visite La Página</a>
+            </div>
+            <div class="resource">
+                <h3>Envíe una Consulta de Caso</h3>
+                <p>Envíe su consulta en línea acerca de su caso o solicite otros servicios, como una solicitud de alojamiento, o la manera de corregir un error en su notificación.</p>
+                <a href="#" class="btn">Visite La Página</a>
+            </div>
+            <div class="resource">
+                <h3>Tiempos de Procesamiento de USCIS</h3>
+                <p>Ver una estimación de cuánto tiempo está tomando USCIS para procesar su solicitud o petición en sus oficinas.</p>
+                <a href="#" class="btn">Visite La Página</a>
+            </div>
+            <div class="resource">
+                <h3>Localidades de Oficinas de USCIS</h3>
+                <p>Encuentre las oficinas locales e internacionales de USCIS y obtenga direcciones a la oficina.</p>
+                <a href="#" class="btn">Visite La Página</a>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <ul>
+            <li><a href="#">Temas</a></li>
+            <li><a href="#">Formularios</a></li>
+            <li><a href="#">Noticias</a></li>
+            <li><a href="#">Ciudadanía</a></li>
+            <li><a href="#">Residencia Permanente</a></li>
+            <li><a href="#">Leyes</a></li>
+            <li><a href="#">Herramientas</a></li>
+        </ul>
+    </nav>
+
+    <div class="footer-section-1"></div>
+    <div class="footer-section-2"></div>
+    <div class="footer-section-3"></div>
+
+    <footer>
+        <p>U.S. Department of Homeland Security Seal, U.S. Citizenship and Immigration Services</p>
+        <p>Contáctenos</p>
+        <p>USCIS.gov - Un sitio web oficial de U.S. Department of Homeland Security</p>
+        <p>Acerca de USCIS | Accesibilidad | Presupuesto y Rendimiento | Componentes de DHS | Ley de Libertad de Información | Datos de la Ley No FEAR | Privacidad y Descargo de Responsabilidad Legal | Mapa del Sitio | Oficina del Inspector General | Casa Blanca | USA.gov</p>
+    </footer>
+
+    <script>
+// Objeto que mapea los códigos de recibo a tipos de casos y mensajes de estado
+const caseTypes = {
+  'WAC': {
+    '2345678901': { type: 'Visa de Trabajo', message: 'Su caso de Visa de Trabajo (WAC2345678901) se encuentra activo y en procesamiento.' },
+    '3456789012': { type: 'Visa de Turismo', message: 'Su solicitud de Visa de Turismo (WAC3456789012) ha sido recibida y está bajo revisión.' },
+    '4567890123': { type: 'Asilo Político', message: 'Su caso de Asilo Político (WAC4567890123) está pendiente de una entrevista.' },
+    '5678901234': { type: 'Residencia Permanente', message: 'Su aplicación para Residencia Permanente (WAC5678901234) está en la etapa final de procesamiento.' },
+    '6789012345': { type: 'Naturalización', message: 'Su solicitud de Naturalización (WAC6789012345) ha sido aprobada. Espere instrucciones para la ceremonia de juramento.' },
+    '7890123456': { type: 'DACA', message: 'Su renovación de DACA (WAC7890123456) está siendo procesada.' },
+    '8901234567': { type: 'Permiso de Trabajo', message: 'Su solicitud de Permiso de Trabajo (WAC8901234567) ha sido aprobada y será enviada pronto.' },
+    '9012345678': { type: 'Visa de Estudiante', message: 'Su Visa de Estudiante (WAC9012345678) ha sido emitida. Revise su correo para más detalles.' },
+    '0123456789': { type: 'Visa de Prometido/a', message: 'Su petición de Visa de Prometido/a (WAC0123456789) está esperando revisión de documentos adicionales.' },
+    '1234567890': { type: 'Visa U', message: 'Su solicitud de Visa U (WAC1234567890) está siendo evaluada por un oficial de inmigración.' }
+  }
+};
+
+const receiptNumberInput = document.getElementById('receiptNumber');
+const captchaInput = document.getElementById('captcha');
+const submitBtn = document.getElementById('submitBtn');
+const statusForm = document.getElementById('statusForm');
+const statusMessage = document.getElementById('statusMessage');
+
+function checkInputs() {
+  if (captchaInput.value.length > 0) {
+    submitBtn.classList.add('active');
+    submitBtn.disabled = false;
+  } else {
+    submitBtn.classList.remove('active');
+    submitBtn.disabled = true;
+  }
+}
+
+captchaInput.addEventListener('input', checkInputs);
+
+statusForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const receiptNumber = receiptNumberInput.value;
+  const prefix = receiptNumber.substr(0, 3);
+  const suffix = receiptNumber.substr(3);
+
+  if (prefix === 'WAC' && caseTypes[prefix] && caseTypes[prefix][suffix]) {
+    statusMessage.textContent = caseTypes[prefix][suffix].message;
+  } else {
+    statusMessage.textContent = 'No se encontró información para el número de recibo proporcionado.';
+  }
+  statusMessage.style.display = 'block';
+});
+</script>
+
+<script>
+    // Objeto que mapea los códigos de recibo a tipos de casos y mensajes de estado
+    const caseTypes = {
+      'WAC': {
+        '2345678901': { type: 'Visa de Trabajo', message: 'Su caso de Visa de Trabajo (WAC2345678901) se encuentra activo y en procesamiento.' },
+        '3456789012': { type: 'Visa de Turismo', message: 'Su solicitud de Visa de Turismo (WAC3456789012) ha sido recibida y está bajo revisión.' },
+        '4567890123': { type: 'Asilo Político', message: 'Su caso de Asilo Político (WAC4567890123) está pendiente de una entrevista.' },
+        '5678901234': { type: 'Residencia Permanente', message: 'Su aplicación para Residencia Permanente (WAC5678901234) está en la etapa final de procesamiento.' },
+        '6789012345': { type: 'Naturalización', message: 'Su solicitud de Naturalización (WAC6789012345) ha sido aprobada. Espere instrucciones para la ceremonia de juramento.' },
+        '7890123456': { type: 'DACA', message: 'Su renovación de DACA (WAC7890123456) está siendo procesada.' },
+        '8901234567': { type: 'Permiso de Trabajo', message: 'Su solicitud de Permiso de Trabajo (WAC8901234567) ha sido aprobada y será enviada pronto.' },
+        '9012345678': { type: 'Visa de Estudiante', message: 'Su Visa de Estudiante (WAC9012345678) ha sido emitida. Revise su correo para más detalles.' },
+        '0123456789': { type: 'Visa de Prometido/a', message: 'Su petición de Visa de Prometido/a (WAC0123456789) está esperando revisión de documentos adicionales.' },
+        '1234567890': { type: 'Visa U', message: 'Su solicitud de Visa U (WAC1234567890) está siendo evaluada por un oficial de inmigración.' }
+      }
+    };
+    
+    const receiptNumberInput = document.getElementById('receiptNumber');
+    const captchaInput = document.getElementById('captcha');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusForm = document.getElementById('statusForm');
+    const statusMessage = document.getElementById('statusMessage');
+    
+    function checkInputs() {
+      if (captchaInput.value.length > 0) {
+        submitBtn.classList.add('active');
+        submitBtn.disabled = false;
+      } else {
+        submitBtn.classList.remove('active');
+        submitBtn.disabled = true;
+      }
+    }
+    
+    captchaInput.addEventListener('input', checkInputs);
+    
+    statusForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const receiptNumber = receiptNumberInput.value;
+      const prefix = receiptNumber.substr(0, 3);
+      const suffix = receiptNumber.substr(3);
+    
+      if (prefix === 'WAC' && caseTypes[prefix] && caseTypes[prefix][suffix]) {
+        statusMessage.textContent = caseTypes[prefix][suffix].message;
+      } else {
+        statusMessage.textContent = 'No se encontró información para el número de recibo proporcionado.';
+      }
+      statusMessage.style.display = 'block';
+    });
+    </script>
+    
+    </body>
+    </html>
